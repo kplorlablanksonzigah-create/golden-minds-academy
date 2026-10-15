@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ student.name }} - Report Card | Golden Minds Academy</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 30px 15px;
+        }
+
+        .report-card {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 8px solid #70e000;
+            border-bottom: 8px solid #ff7b00;
+        }
+
+        .school-header {
+            text-align: center;
+            border-bottom: 2px solid #0b1d3a;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .school-header h1 {
+            color: #0b1d3a;
+            font-size: 26px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .school-header p {
+            color: #666;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .student-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #0b1d3a;
+        }
+
+        .info-item {
+            font-size: 14px;
+        }
+
+        .info-item strong {
+            color: #0b1d3a;
+        }
+
+        h2 {
+            color: #0b1d3a;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #0b1d3a;
+            color: white;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-card .number {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0b1d3a;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-print {
+            background-color: #0b1d3a;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .btn-back {
+            background-color: #ff7b00;
+            color: white;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        /* Hide buttons when printing */
+        @media print {
+            body { background: white; padding: 0; }
+            .report-card { box-shadow: none; border: none; padding: 20px; }
+            .actions { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="report-card">
+        <div class="school-header">
+            <h1>Golden Minds Academy</h1>
+            <p>Official Academic Performance Report</p>
+        </div>
+
+        <div class="student-info-grid">
+            <div class="info-item"><strong>Student Name:</strong> {{ student.name }}</div>
+            <div class="info-item"><strong>Class / Grade:</strong> {{ student.grade }}</div>
+            <div class="info-item"><strong>Student ID:</strong> GMA-{{ "%03d"|format(student.id) }}</div>
+            <div class="info-item"><strong>Age:</strong> {{ student.age }} years</div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="number">{{ average_score }}%</div>
+                <div class="label">Overall Average</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: #70e000;">{{ present_days }}</div>
+                <div class="label">Days Present</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" style="color: #ff7b00;">{{ absent_days }}</div>
+                <div class="label">Days Absent</div>
+            </div>
+        </div>
+
+        <h2>Subject Marks</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Score (%)</th>
+                    <th>Grade Performance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for g in grades %}
+                <tr>
+                    <td>{{ g.subject }}</td>
+                    <td><strong>{{ g.score }}%</strong></td>
+                    <td>
+                        {% if g.score >= 80 %}
+                            <span style="color: #70e000; font-weight: 700;">Excellent (A)</span>
+                        {% elif g.score >= 70 %}
+                            <span style="color: #0b1d3a; font-weight: 700;">Very Good (B)</span>
+                        {% elif g.score >= 50 %}
+                            <span style="color: #ff7b00; font-weight: 700;">Pass (C)</span>
+                        {% else %}
+                            <span style="color: #e74c3c; font-weight: 700;">Needs Improvement (F)</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center; color: #94a3b8;">No assessment marks recorded for this student yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <button onclick="window.print()" class="btn-print">🖨️ Print Report Card</button>
+            <a href="/teacher_dashboard" class="btn-back">← Back to Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>

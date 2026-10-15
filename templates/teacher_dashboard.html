@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Portal - Golden Minds Academy</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top left, #1a365d, #0b1d3a 70%);
+            min-height: 100vh;
+            color: #333;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background-color: #0b1d3a;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #ff7b00;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .logout-btn {
+            background: #ff7b00;
+            color: white;
+            padding: 8px 18px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #e06d00;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 40px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border-top: 6px solid #ff7b00;
+        }
+
+        h2 {
+            color: #0b1d3a;
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .date-badge {
+            display: inline-block;
+            background-color: #e2e8f0;
+            color: #0b1d3a;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-left: 8px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #0b1d3a;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #0b1d3a;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        td {
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .btn-present {
+            background-color: #70e000;
+            color: #0b1d3a;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-absent {
+            background-color: #ff7b00;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .badge-present {
+            display: inline-block;
+            background-color: #70e000;
+            color: #0b1d3a;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .badge-absent {
+            display: inline-block;
+            background-color: #ff7b00;
+            color: white;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .btn-toggle {
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 11px;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+
+        .grade-form {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .grade-form select, .grade-form input {
+            padding: 6px 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .btn-grade {
+            background-color: #0b1d3a;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .grade-pill {
+            display: inline-block;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #0b1d3a;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin: 2px;
+        }
+
+        .btn-report {
+            background-color: #0b1d3a;
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Golden Minds Academy — Teacher Portal</h1>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="container">
+        <h2>Teacher Dashboard</h2>
+        <p class="subtitle">Class Roster, Attendance & Assessment Entry <span class="date-badge">Today: {{ today }}</span></p>
+
+        <input type="text" id="teacherSearch" class="search-bar" onkeyup="filterTable('teacherSearch', 'teacherTable')" placeholder="🔍 Search student by name or class...">
+
+        <table id="teacherTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Grade</th>
+                    <th>Attendance</th>
+                    <th>Recorded Marks</th>
+                    <th>Add Subject Mark</th>
+                    <th>Report Card</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.id }}</td>
+                    <td><strong>{{ student.name }}</strong></td>
+                    <td>{{ student.grade }}</td>
+                    <td>
+                        {% if student.status == 'Present' %}
+                            <span class="badge-present">✓ Present</span>
+                            <form action="/mark_attendance/{{ student.id }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="status" value="Absent">
+                                <button type="submit" class="btn-toggle">(Set Absent)</button>
+                            </form>
+                        {% elif student.status == 'Absent' %}
+                            <span class="badge-absent">✗ Absent</span>
+                            <form action="/mark_attendance/{{ student.id }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="status" value="Present">
+                                <button type="submit" class="btn-toggle">(Set Present)</button>
+                            </form>
+                        {% else %}
+                            <form action="/mark_attendance/{{ student.id }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="status" value="Present">
+                                <button type="submit" class="btn-present">Present</button>
+                            </form>
+                            <form action="/mark_attendance/{{ student.id }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="status" value="Absent">
+                                <button type="submit" class="btn-absent">Absent</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if grades.get(student.id) %}
+                            {% for g in grades[student.id] %}
+                                <span class="grade-pill">{{ g.subject }}: {{ g.score }}%</span>
+                            {% endfor %}
+                        {% else %}
+                            <span style="color: #94a3b8; font-size: 12px;">No marks yet</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="/add_grade/{{ student.id }}" method="POST" class="grade-form">
+                            <select name="subject" required>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Computing">Computing</option>
+                                <option value="English">English</option>
+                                <option value="Integrated Science">Science</option>
+                                <option value="RME">RME</option>
+                                <option value="Cultural Studies">Cultural Studies</option>
+                            </select>
+                            <input type="number" name="score" placeholder="Mark %" min="0" max="100" style="width: 70px;" required>
+                            <button type="submit" class="btn-grade">Save</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="/report_card/{{ student.id }}" class="btn-report">📄 View Report</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterTable(inputId, tableId) {
+            let input = document.getElementById(inputId);
+            let filter = input.value.toLowerCase();
+            let table = document.getElementById(tableId);
+            let tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let text = tr[i].textContent || tr[i].innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

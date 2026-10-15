@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts Portal - Golden Minds Academy</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top left, #1a365d, #0b1d3a 70%);
+            min-height: 100vh;
+            color: #333;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background-color: #0b1d3a;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #70e000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .logout-btn {
+            background: #ff7b00;
+            color: white;
+            padding: 8px 18px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #e06d00;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 40px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border-top: 6px solid #70e000;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            color: #0b1d3a;
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .card .amount {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .card .label {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #0b1d3a;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .btn-export {
+            background-color: #70e000;
+            color: #0b1d3a;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .btn-export:hover {
+            background-color: #5cb800;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #0b1d3a;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        td {
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+            color: #334155;
+        }
+
+        .item-pill {
+            display: block;
+            font-size: 11px;
+            color: #475569;
+        }
+
+        .badge-paid {
+            display: inline-block;
+            background-color: #70e000;
+            color: #0b1d3a;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .badge-partial {
+            display: inline-block;
+            background-color: #f1c40f;
+            color: #0b1d3a;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .badge-owing {
+            display: inline-block;
+            background-color: #ff7b00;
+            color: white;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .pay-form {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .pay-form input {
+            padding: 6px 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 12px;
+            width: 80px;
+        }
+
+        .btn-pay {
+            background-color: #0b1d3a;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-receipt {
+            background-color: #0b1d3a;
+            color: white;
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Golden Minds Academy — Accounts Portal</h1>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="container">
+        <h2>Bursar & Fee Schedule Management</h2>
+        <p class="subtitle">Detailed breakdown for Tuition, Breakfast, Lunch, and Transportation fees.</p>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="card" style="border-top: 4px solid #0b1d3a;">
+                <div class="label">Total Expected Revenue</div>
+                <div class="amount" style="color: #0b1d3a;">GH₵ {{ "%.2f"|format(total_expected) }}</div>
+            </div>
+            <div class="card" style="border-top: 4px solid #70e000;">
+                <div class="label">Total Fees Collected</div>
+                <div class="amount" style="color: #70e000;">GH₵ {{ "%.2f"|format(total_collected) }}</div>
+            </div>
+            <div class="card" style="border-top: 4px solid #ff7b00;">
+                <div class="label">Total Outstanding Debt</div>
+                <div class="amount" style="color: #ff7b00;">GH₵ {{ "%.2f"|format(total_outstanding) }}</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h3 style="color: #0b1d3a; font-size: 18px;">Student Fee Roster</h3>
+            <a href="/export_fees_csv" class="btn-export">📥 Export Fee Statement (CSV)</a>
+        </div>
+        
+        <input type="text" id="accountsSearch" class="search-bar" onkeyup="filterTable('accountsSearch', 'accountsTable')" placeholder="🔍 Search student by name or class...">
+
+        <table id="accountsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Grade</th>
+                    <th>Fee Breakdown (GH₵)</th>
+                    <th>Total Fee</th>
+                    <th>Paid</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                    <th>Record Payment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                {% set balance = student.total_fee - student.paid %}
+                <tr>
+                    <td>{{ student.id }}</td>
+                    <td><strong>{{ student.name }}</strong></td>
+                    <td>{{ student.grade }}</td>
+                    <td>
+                        <span class="item-pill">Tuition: <strong>GH₵ {{ "%.2f"|format(student.tuition) }}</strong></span>
+                        <span class="item-pill">Breakfast: <strong>GH₵ {{ "%.2f"|format(student.breakfast) }}</strong></span>
+                        <span class="item-pill">Lunch: <strong>GH₵ {{ "%.2f"|format(student.lunch) }}</strong></span>
+                        <span class="item-pill">Transport: <strong>GH₵ {{ "%.2f"|format(student.transportation) }}</strong></span>
+                    </td>
+                    <td><strong>GH₵ {{ "%.2f"|format(student.total_fee) }}</strong></td>
+                    <td>GH₵ {{ "%.2f"|format(student.paid) }}</td>
+                    <td>
+                        {% if balance > 0 %}
+                            <strong style="color: #ff7b00;">GH₵ {{ "%.2f"|format(balance) }}</strong>
+                        {% else %}
+                            <strong style="color: #70e000;">GH₵ 0.00</strong>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if balance <= 0 %}
+                            <span class="badge-paid">✓ Paid</span>
+                        {% elif student.paid > 0 %}
+                            <span class="badge-partial">⚡ Partial</span>
+                        {% else %}
+                            <span class="badge-owing">✗ Owing</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if balance > 0 %}
+                        <form action="/record_payment/{{ student.id }}" method="POST" class="pay-form">
+                            <input type="number" name="amount" placeholder="GH₵" step="0.01" max="{{ balance }}" required>
+                            <button type="submit" class="btn-pay">Pay</button>
+                        </form>
+                        {% else %}
+                            <span style="color: #70e000; font-size: 12px; font-weight: 700;">Cleared</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Recent Payment History & Receipts</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Receipt No</th>
+                    <th>Student Name</th>
+                    <th>Grade</th>
+                    <th>Date Paid</th>
+                    <th>Amount Paid</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in recent_payments %}
+                <tr>
+                    <td><strong>#GMA-REC-{{ "%04d"|format(p.payment_id) }}</strong></td>
+                    <td>{{ p.student_name }}</td>
+                    <td>{{ p.grade }}</td>
+                    <td>{{ p.date_paid }}</td>
+                    <td style="color: #70e000; font-weight: 700;">GH₵ {{ "%.2f"|format(p.amount_paid) }}</td>
+                    <td><a href="/receipt/{{ p.payment_id }}" class="btn-receipt">📄 View Receipt</a></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #94a3b8;">No fee payment transactions recorded yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterTable(inputId, tableId) {
+            let input = document.getElementById(inputId);
+            let filter = input.value.toLowerCase();
+            let table = document.getElementById(tableId);
+            let tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let text = tr[i].textContent || tr[i].innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Payment Receipt #GMA-REC-{{ "%04d"|format(payment.payment_id) }}</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 40px 20px;
+        }
+
+        .receipt-container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 8px solid #70e000;
+            border-bottom: 8px solid #ff7b00;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px dashed #0b1d3a;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #0b1d3a;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .receipt-badge {
+            display: inline-block;
+            background-color: #0b1d3a;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .details-grid strong {
+            color: #0b1d3a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+
+        th {
+            background-color: #0b1d3a;
+            color: white;
+        }
+
+        .total-box {
+            background-color: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #70e000;
+            margin-bottom: 30px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .total-row.highlight {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0b1d3a;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        .actions {
+            text-align: center;
+        }
+
+        .btn-print {
+            background-color: #0b1d3a;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .btn-back {
+            background-color: #ff7b00;
+            color: white;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .receipt-container { box-shadow: none; border: none; padding: 20px; }
+            .actions { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="receipt-container">
+        <div class="header">
+            <h1>Golden Minds Academy</h1>
+            <p>Official School Fee Payment Receipt</p>
+            <span class="receipt-badge">RECEIPT NO: #GMA-REC-{{ "%04d"|format(payment.payment_id) }}</span>
+        </div>
+
+        <div class="details-grid">
+            <div><strong>Student Name:</strong> {{ payment.name }}</div>
+            <div><strong>Class / Grade:</strong> {{ payment.grade }}</div>
+            <div><strong>Date Paid:</strong> {{ payment.date_paid }}</div>
+            <div><strong>Student ID:</strong> GMA-{{ "%03d"|format(payment.student_id) }}</div>
+        </div>
+
+        <h3>Billed Fee Structure</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item Description</th>
+                    <th>Amount (GH₵)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Tuition Fee</td><td>GH₵ {{ "%.2f"|format(payment.tuition) }}</td></tr>
+                <tr><td>Breakfast Provision</td><td>GH₵ {{ "%.2f"|format(payment.breakfast) }}</td></tr>
+                <tr><td>Lunch Provision</td><td>GH₵ {{ "%.2f"|format(payment.lunch) }}</td></tr>
+                <tr><td>Transportation Service</td><td>GH₵ {{ "%.2f"|format(payment.transportation) }}</td></tr>
+            </tbody>
+        </table>
+
+        <div class="total-box">
+            <div class="total-row">
+                <span>Total Term Fee Required:</span>
+                <span>GH₵ {{ "%.2f"|format(payment.total_fee) }}</span>
+            </div>
+            <div class="total-row" style="color: #70e000; font-weight: 700;">
+                <span>Amount Paid In This Transaction:</span>
+                <span>GH₵ {{ "%.2f"|format(payment.amount_paid) }}</span>
+            </div>
+            <div class="total-row">
+                <span>Total Cumulative Paid:</span>
+                <span>GH₵ {{ "%.2f"|format(total_paid) }}</span>
+            </div>
+            <div class="total-row highlight">
+                <span>Remaining Balance Due:</span>
+                <span style="color: {% if balance > 0 %}#ff7b00{% else %}#70e000{% endif %};">
+                    GH₵ {{ "%.2f"|format(balance) }}
+                </span>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button onclick="window.print()" class="btn-print">🖨️ Print Receipt</button>
+            <a href="/accounts_dashboard" class="btn-back">← Back to Accounts</a>
+        </div>
+    </div>
+
+</body>
+</html>
